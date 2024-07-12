@@ -3,9 +3,10 @@ import { type User } from '../types.ts'
 interface Props {
   colorRows: boolean
   users: User[]
+  handleDelete: Function
 }
 
-const UserList = ({ colorRows, users }: Props) => {
+const UserList = ({ colorRows, users, handleDelete }: Props) => {
   return (
     <table>
       <thead>
@@ -21,11 +22,9 @@ const UserList = ({ colorRows, users }: Props) => {
         {users.map((user: User, index: number) => {
           const color = index % 2 === 0 ? '#333' : 'black'
           const coloredStyle = colorRows ? color : 'transparent'
+          const userId = `${user.id.value}_${index}`
           return (
-            <tr
-              key={`${user.id.value}_${index}`}
-              style={{ backgroundColor: coloredStyle }}
-            >
+            <tr key={userId} style={{ backgroundColor: coloredStyle }}>
               <td>
                 <img src={user.picture.thumbnail} />
               </td>
@@ -33,7 +32,9 @@ const UserList = ({ colorRows, users }: Props) => {
               <td>{user.name.last}</td>
               <td>{user.location.country}</td>
               <td>
-                <button>Delete</button>
+                <button onClick={() => handleDelete(user.id.value)}>
+                  Delete
+                </button>
               </td>
             </tr>
           )
