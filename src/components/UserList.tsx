@@ -3,7 +3,7 @@ import { type User } from '../types.ts'
 interface Props {
   colorRows: boolean
   users: User[]
-  handleDelete: Function
+  handleDelete: (id: string) => void
 }
 
 const UserList = ({ colorRows, users, handleDelete }: Props) => {
@@ -22,7 +22,7 @@ const UserList = ({ colorRows, users, handleDelete }: Props) => {
         {users.map((user: User, index: number) => {
           const color = index % 2 === 0 ? '#333' : 'black'
           const coloredStyle = colorRows ? color : 'transparent'
-          const userId = `${user.id.value}_${index}`
+          const userId = user.login.uuid
           return (
             <tr key={userId} style={{ backgroundColor: coloredStyle }}>
               <td>
@@ -32,7 +32,7 @@ const UserList = ({ colorRows, users, handleDelete }: Props) => {
               <td>{user.name.last}</td>
               <td>{user.location.country}</td>
               <td>
-                <button onClick={() => handleDelete(user.id.value)}>
+                <button onClick={() => { handleDelete(userId) }}>
                   Delete
                 </button>
               </td>
