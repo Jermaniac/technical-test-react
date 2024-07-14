@@ -1,3 +1,23 @@
+# What is this project?
+
+This is a technical code frontend interview seen in a midudev [youtube video](https://www.youtube.com/watch?v=mNJOWXc83Y4).
+At first sight looks like an easy problem but if you check the challenges you will be using a lot of react functionality that could be tricky.
+Give it a try!
+
+# How to setup this project
+
+PNPM is a good option to install all the dependencies from this project.
+
+```
+pnpm install
+```
+
+Once installed you can run.
+
+```
+pnpm run dev
+```
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
