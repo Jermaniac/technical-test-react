@@ -1,20 +1,21 @@
-import { type User } from '../types.ts'
+import { SORT_TYPES, type User } from '../types.ts'
 
 interface Props {
   colorRows: boolean
   users: User[]
   handleDelete: (id: string) => void
+  selectSortType: (type: SORT_TYPES) => void
 }
 
-const UserList = ({ colorRows, users, handleDelete }: Props) => {
+const UserList = ({ colorRows, users, handleDelete, selectSortType }: Props) => {
   return (
     <table>
       <thead>
         <tr>
           <th>Photo</th>
-          <th>Name</th>
-          <th>Surname</th>
-          <th>Country</th>
+          <th onClick={() => { selectSortType(SORT_TYPES.NAME) }} style={{ cursor: 'pointer' }}>Name</th>
+          <th onClick={() => { selectSortType(SORT_TYPES.SURNAME) }} style={{ cursor: 'pointer' }}>Surname</th>
+          <th onClick={() => { selectSortType(SORT_TYPES.COUNTRY) }} style={{ cursor: 'pointer' }}>Country</th>
           <th>Actions</th>
         </tr>
       </thead>

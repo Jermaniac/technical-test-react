@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
-import { type APIResponse, type User } from './types.ts'
+import { SORT_TYPES, type APIResponse, type User } from './types.ts'
 import UserList from './components/UserList.tsx'
 
 function App () {
   const [people, setPeople] = useState<User[]>([])
   const [colorRows, setColorRows] = useState<boolean>(false)
-  const [sortByCountry, setSortByCountry] = useState<boolean>(false)
+  const [sortBy, setSortBy] = useState<SORT_TYPES>(SORT_TYPES.NONE)
   const originalPeople = useRef<User[]>([])
   const [country, setCountry] = useState<string | null>(null)
 
@@ -26,10 +26,6 @@ function App () {
     setColorRows(!colorRows)
   }
 
-  const toggleSortByCountry = () => {
-    setSortByCountry(prev => !prev)
-  }
-
   const resetState = () => {
     setPeople(originalPeople.current)
   }
@@ -45,26 +41,41 @@ function App () {
     console.log('filterByCoutnry')
     return country != null
       ? [...people].filter((user) =>
-          user.location.country.toLowerCase().includes(country.toLowerCase())
-        )
+        user.location.country.toLowerCase().includes(country.toLowerCase())
+      )
       : people
   }, [people, country])
 
   const sortedUsers = useMemo(() => {
     console.log('sortedUsers')
-    return sortByCountry
-      ? filterByCountry.toSorted((a: User, b: User) =>
-        a.location.country.localeCompare(b.location.country)
-      )
-      : filterByCountry
-  }, [filterByCountry, sortByCountry])
+    switch (sortBy) {
+      case SORT_TYPES.COUNTRY:
+        return filterByCountry.toSorted((a: User, b: User) =>
+          a.location.country.localeCompare(b.location.country)
+        )
+      case SORT_TYPES.NAME:
+        return filterByCountry.toSorted((a: User, b: User) =>
+          a.name.first.localeCompare(b.name.first)
+        )
+      case SORT_TYPES.SURNAME:
+        return filterByCountry.toSorted((a: User, b: User) =>
+          a.name.last.localeCompare(b.name.last)
+        )
+      default:
+        return filterByCountry
+    }
+  }, [filterByCountry, sortBy])
+
+  const selectSortBy = (type: SORT_TYPES) => {
+    setSortBy(type)
+  }
 
   return (
     <>
       <div>Technical test</div>
       <header>
         <button onClick={toggleColorSwitch}> Color rows</button>
-        <button onClick={toggleSortByCountry}> Sort by country</button>
+        <button onClick={() => { selectSortBy(SORT_TYPES.COUNTRY) }}> Sort by country</button>
         <button onClick={resetState}> Restore initial state</button>
         <input
           type="text"
@@ -75,6 +86,7 @@ function App () {
       </header>
       <main>
         <UserList
+          selectSortType={selectSortBy}
           handleDelete={deleteRow}
           colorRows={colorRows}
           users={sortedUsers}

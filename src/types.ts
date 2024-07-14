@@ -102,3 +102,11 @@ declare global {
     toSorted(compareFn?: (a: T, b: T) => number): T[]
   }
 }
+
+export enum SORT_TYPES {
+  NONE = 'none',
+  COUNTRY = 'country',
+  NAME = 'name',
+  SURNAME = 'surname',
+  PHOTO = 'photo',
+}
